@@ -95,7 +95,7 @@ records only current status by age and sex.
 
 **Redesign (the Question 3 figure):**
 
-![Redesigned literacy figure](figures/literacy.svg)
+![Q4 redesign - age patterns shown clearly (weighted conditional means by age-sex)](figures/q4_redesign.svg)
 
 **Redesign explanation (148 words).** The default plot puts individual age on
 the x-axis and the 0/1 literacy indicator on the y-axis; 13,200 points collapse
