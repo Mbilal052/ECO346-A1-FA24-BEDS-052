@@ -30,18 +30,24 @@ wquantile <- function(x, w, p) {
 }
 
 w_med <- wquantile(s$ed_total, s$hhweight, 0.50)
-u_med <- median(students$ed_total)
+u_med <- median(s$ed_total)
 w_p10 <- wquantile(s$ed_total, s$hhweight, 0.10)
 w_p90 <- wquantile(s$ed_total, s$hhweight, 0.90)
 
 logx <- log10(s$ed_total)
-cuts <- cut(logx, breaks = seq(2, 6, by = 0.1),
-            right = TRUE, include.lowest = TRUE)
-w_bin <- as.numeric(tapply(s$hhweight, cuts, sum))
+breaks <- seq(2, 6, by = 0.1)
+
+bin_id <- findInterval(logx, breaks, rightmost.closed = TRUE)
+bin_id[bin_id == 41] <- 40
+
+w_bin <- as.numeric(tapply(s$hhweight, bin_id, sum))
 w_bin[is.na(w_bin)] <- 0
+w_bin <- rep(w_bin, length.out = 40)
+if (length(w_bin) < 40) w_bin <- c(w_bin, rep(0, 40 - length(w_bin)))
+
 bins <- data.frame(
-  xmin = 2 + 0.1 * (0:39),
-  xmax = 2 + 0.1 * (1:40),
+  xmin = breaks[1:40],
+  xmax = breaks[2:41],
   density = w_bin / sum(s$hhweight) / 0.1
 )
 
