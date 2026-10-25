@@ -40,10 +40,7 @@ breaks <- seq(2, 6, by = 0.1)
 bin_id <- findInterval(logx, breaks, rightmost.closed = TRUE)
 bin_id[bin_id == 41] <- 40
 
-w_bin <- as.numeric(tapply(s$hhweight, bin_id, sum))
-w_bin[is.na(w_bin)] <- 0
-w_bin <- rep(w_bin, length.out = 40)
-if (length(w_bin) < 40) w_bin <- c(w_bin, rep(0, 40 - length(w_bin)))
+w_bin <- sapply(1:40, function(b) sum(s$hhweight[bin_id == b]))
 
 bins <- data.frame(
   xmin = breaks[1:40],

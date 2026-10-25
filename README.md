@@ -42,13 +42,13 @@ The R scripts use `ggplot2` and `svglite`; the Python script uses `pandas` and
 10th percentile: **10.00**. Students excluded outside Rs 100–Rs 1,000,000:
 **3**.
 
-**What the figure shows (77 words).** The distribution is strongly
-right-skewed: most KP rural students cost a few thousand rupees a year, but a
-thin upper tail reaches Rs 1 million. The weighted 90th percentile is ten times
-the 10th (Rs 25,000 versus Rs 2,500). Weighted and unweighted medians are both
-Rs 7,000, so reweighting does not move the midpoint; the household weights are
-balanced around that value, and the median therefore does not change when large
-households count more.
+**What the figure shows (78 words).** The distribution is strongly right-skewed:
+most KP rural students incur a few thousand rupees annually, but a thin upper
+tail reaches Rs 1 million. The weighted 90th percentile is ten times the 10th
+(Rs 25,000 versus Rs 2,500). Both medians equal Rs 7,000 because spending
+clusters at round figures. Exactly 134 students report Rs 7,000, straddling 50%
+in both unweighted (49.2% to 52.0%) and weighted (47.4% to 50.3%) cumulative
+distributions.
 
 ## Question 3 — The relationship
 
@@ -57,7 +57,8 @@ households count more.
 **Numbers.** Women aged 15–19: **52.6%**; men aged 15–19: **85.1%**. Women aged
 55–59: **2.9%**; men aged 55–59: **43.0%**. The largest gender gap is in the
 **45–49** band: women **10.5%**, men **57.0%**, a gap of **46.6 percentage
-points**.
+points** (unrounded: 46.55 pp, edging out 35–39 at 46.52 pp and 40–44 at 46.50
+pp).
 
 ### Band table
 
@@ -78,14 +79,14 @@ points**.
 Every age–sex cell has at least 30 unweighted persons, so no hollow (thin)
 markers appear in this variant.
 
-**Interpretation (87 words).** Literacy falls monotonically with age for both
-sexes, consistent with cohort replacement: younger cohorts had more schooling,
-while older cohorts, especially women, often had none. The gender gap is widest
-at ages 45–49, where men's literacy is 57.0% and women's 10.5%, a 46.6-point
-gap. This pattern is consistent with supply-side and social constraints on
-girls' education in earlier decades. The cross-section cannot tell us whether
-schooling caused later literacy, nor when any individual became literate; it
-records only current status by age and sex.
+**Interpretation (88 words).** Literacy falls with age from the late teens, with
+small reversals at the ends (men rise between 10–14 and 15–19; women slightly
+between 55–59 and 60–64). This pattern reflects cohort replacement: younger
+generations had greater educational access, whereas older cohorts faced severe
+supply constraints. The gender gap peaks at ages 45–49 at 46.6 percentage points
+(57.0% vs. 10.5%), in a near-tie with 35–44. The cross-section records only
+current status; it cannot reveal when individuals became literate, nor separate
+schooling expansion from age or survival effects.
 
 ## Question 4 — The makeover
 
@@ -95,21 +96,21 @@ records only current status by age and sex.
 
 **Redesign (the Question 3 figure):**
 
-![Q4 redesign - age patterns shown clearly (weighted conditional means by age-sex)](figures/q4_redesign.svg)
+![Weighted conditional means by age band and sex (Question 3 redesign)](figures/literacy.svg)
 
-**Redesign explanation (148 words).** The default plot puts individual age on
-the x-axis and the 0/1 literacy indicator on the y-axis; 13,200 points collapse
-into two horizontal bands, so the age pattern is invisible. I made four changes.
-First, I replaced raw points with weighted conditional means by age band, which
-directly addresses **overplotting** and exposes the conditional relationship.
-Second, I mapped sex to two colour-coded lines and labeled each series at its
-end; colour is a strong **perceptual channel**, and direct labels replace a
-legend lookup, improving **data–ink**. Third, I fixed the y-axis at 0–100% and
-labeled bands at their midpoints, so differences are read on a common, honest
-scale rather than as 0/1 noise. Fourth, hollow markers flag thin cells, making
-uncertainty visible. The default shows every individual observation and the full
-dispersion within each age; the redesign hides that dispersion and shows only
-the conditional means.
+**Redesign explanation (126 words).** The default plot places individual age on
+the x-axis and binary literacy (0/1) on the y-axis; 13,200 points collapse into
+two horizontal bands, obscuring the age pattern. I made three key changes. First,
+aggregating into five-year bands and computing weighted **conditional means**
+resolves severe **overplotting**, exposing the underlying demographic
+relationship. Second, mapping aggregate literacy rates to **position along a
+common scale** (0–100%) leverages the highest-ranked elementary perceptual task
+(Cleveland–McGill) rather than binary scatter. Third, directly labeling each sex
+at line ends removes a detached legend, maximizing the **data–ink ratio**
+(Tufte). What the default shows that the redesign hides is the raw
+individual-level sample structure, showing exact sample counts at each single
+year of age and revealing any respondent age heaping, which five-year aggregation
+conceals.
 
 ## Question 5 — A second language
 
@@ -121,14 +122,15 @@ the R table to one decimal place.
 
 **Numbers.** Women aged 15–19: **52.6%** from R and **52.6%** from Python.
 
-**What differed (52 words).** Matplotlib, unlike ggplot2, did not default to a
-0–100 y-axis and filled every marker. I set `ylim(0, 100)`, used the same
-0.1-wide age bands and midpoints, the same `hhweight` weighting, matching
-colours, and hollow circle markers for thin cells. Both languages produce the
-same band table to one decimal place.
+**What differed (69 words).** A key difference arose in age binning defaults:
+standard binning functions in Python like `pd.cut` default to right-closed
+intervals `(10, 15]`, which misclassifies boundary ages compared to R's
+left-closed bands `[10, 15)`. To ensure the five-year age bands and midpoints
+matched exactly, I used integer floor division `(age - 10) // 5` in Python. I
+also aligned the weighted aggregation formula, hex colours, direct end-labels,
+and y-axis limits (0–100%).
 
 ## Question 6 — Presentation
 
 The four-slide PowerPoint is `slides/FA24-BEDS-052.pptx`. It shows the variant,
 the makeover (default and redesign side by side), and the main finding.
-
